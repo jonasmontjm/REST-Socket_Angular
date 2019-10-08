@@ -32,23 +32,32 @@ export default class Server {
     private escucharSockets(){
         console.log('Escuchando conexiones - sockets');
         this.io.on('connection', client => {
-            console.log('Nuevo Cliente Conectado');
+            //console.log('Nuevo Cliente Conectado');
 
             //Escuchar mensajes
 
             //socket.mensaje(client, this.io);
-            socket.mensaje(client);
+            //console.log(client.id);
 
+            socket.conectarCliente( client );
+
+            socket.mensaje(client, this.io);
 
             //desconectar
             socket.desconectar(client);
+
+            socket.configurarUsuario(client);
         });
 
         
     }
 
-    start(callback: Function){
-        this.httpServer.listen(this.port,callback);
-        
-    };
+    start(){
+        this.httpServer.listen(this.port, ()=>{
+            console.log(`Servidor corriendo en el puerto ${SERVER_PORT}`);
+        });
+    }
+
+
+
 }
